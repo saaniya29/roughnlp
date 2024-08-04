@@ -1,0 +1,32 @@
+class EarleyItem:
+    def __init__(self, lhs, rhs, dot, start):
+        self.lhs, self.rhs, self.dot, self.start = lhs, rhs, dot, start
+def predict(grammar, chart, item, col):
+    for rhs in grammar.get(item.rhs[item.dot], []):
+        chart[col].append(EarleyItem(item.rhs[item.dot], rhs, 0, col))
+def scan(tokens, chart, item, col):
+    if col < len(tokens) and item.rhs[item.dot] == tokens[col]:
+        chart[col + 1].append(EarleyItem(item.lhs, item.rhs, item.dot + 1, item.start))
+def complete(chart, item, col):
+    for e in chart[item.start]:
+        if e.dot < len(e.rhs) and e.rhs[e.dot] == item.lhs:
+            chart[col].append(EarleyItem(e.lhs, e.rhs, e.dot + 1, e.start))
+def earley_parse(tokens, grammar):
+    chart = [[] for _ in range(len(tokens) + 1)]
+    start_symbol = list(grammar.keys())[0]
+    chart[0].append(EarleyItem(start_symbol, grammar[start_symbol][0], 0, 0))
+    for col in range(len(tokens) + 1):
+        for item in chart[col]:
+            if item.dot < len(item.rhs):
+                if item.rhs[item.dot] in grammar:
+                    predict(grammar, chart, item, col)
+                else:
+                    scan(tokens, chart, item, col)
+            else:
+                complete(chart, item, col)
+    return any(item.lhs == start_symbol and item.dot == len(item.rhs) and item.start == 0 for item in chart[len(tokens)])
+grammar = {
+    'S': [['NP', 'VP']], 'NP': [['Det', 'N']], 'VP': [['V', 'NP']],
+    'Det': [['the'], ['a']], 'N': [['cat'], ['dog']], 'V': [['chased'], ['ate']]}
+tokens = ['the', 'dog', 'chased', 'a', 'cat']
+print("Parsing successful:", earley_parse(tokens, grammar))
