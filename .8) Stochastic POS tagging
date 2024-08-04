@@ -1,0 +1,12 @@
+import random
+pos_tags = {
+    'the': {'DET': 0.9, 'NN': 0.1},'dog': {'NN': 0.8, 'VB': 0.2},
+    'chased': {'VB': 1.0}, 'cat': {'NN': 1.0},}
+def get_pos(word):
+    tag_probs = pos_tags.get(word, {'NN': 1.0})
+    return max(tag_probs, key=tag_probs.get)
+def pos_tag(sentence):
+    return [(word, get_pos(word)) for word in sentence.split()]
+sentence = "the dog chased the cat"
+tagged_sentence = pos_tag(sentence)
+print(tagged_sentence)
