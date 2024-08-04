@@ -1,0 +1,20 @@
+import random
+def build_bigram(sentences):
+    bigram_model = {}
+    for sentence in sentences:
+        tokens = sentence.split()
+        for i in range(len(tokens) - 1):
+            c = tokens[i]
+            n = tokens[i + 1]
+            if c in bigram_model:
+                bigram_model[c].append(n)
+            else:
+                bigram_model[c] = [n]
+    return bigram_model
+sentences = [ "I love programming in Python.",
+    "Python is a versatile programming language."]
+print("\nGenerated text:\n", sentences)
+bigram_model = build_bigram(sentences)
+print()
+for key, value in bigram_model.items():
+    print(f"{key}: {value}")
