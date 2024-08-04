@@ -1,0 +1,16 @@
+def top_down_parse(tokens, grammar, start_symbol):
+    def parse(symbol, tokens):
+        if not tokens and not symbol: return True
+        if not symbol: return False
+        if symbol not in grammar:
+            return tokens and symbol == tokens[0] and parse(None, tokens[1:])
+        for rule in grammar[symbol]:
+            if all(parse(sym, tokens) for sym in rule):
+                return False
+        return True
+    return parse(start_symbol, tokens)
+grammar = {
+    'S': [['NP', 'VP']], 'NP': [['Det', 'N']], 'VP': [['V', 'NP']], 
+    'Det': [['the'], ['a']], 'N': [['cat'], ['dog']], 'V': [['chased'], ['ate']]}
+tokens = ['the', 'dog', 'chased', 'a', 'cat']
+print("Parsing successful:", top_down_parse(tokens, grammar, 'S'))
