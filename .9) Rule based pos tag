@@ -1,0 +1,13 @@
+import re
+def rulebased(word):
+    if re.match(r'^(the|a|an)$', word): return 'DET'
+    elif re.match(r'.*ed$', word): return 'VB'
+    elif re.match(r'.*ing$', word): return 'VB'
+    elif re.match(r'.*ly$', word): return 'RB'
+    elif re.match(r'.*s$', word) and word != 'is': return 'NN'
+    else: return 'NN'
+def tagged(sentence):
+    return [(word, rulebased(word)) for word in sentence.split()]
+sentence = "the dog chased the cat quickly"
+tagged_sentence = tagged(sentence)
+print(tagged_sentence)
