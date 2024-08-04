@@ -1,0 +1,23 @@
+import nltk
+nltk.download('wordnet')
+nltk.download('omw-1.4')
+from nltk.corpus import wordnet as wn
+from nltk.tokenize import word_tokenize
+def lesk(word, sentence):
+    max_overlap = 0
+    best = None
+    context = set(word_tokenize(sentence))
+    for sense in wn.synsets(word):
+        signature = set(word_tokenize(sense.definition()))
+        overlap = len(context.intersection(signature))
+        if overlap > max_overlap:
+            max_overlap = overlap
+            best = sense
+    return best
+sentence = "The river bank is a peaceful place to relax."
+ambiguous_word = "bank"
+sense = lesk(ambiguous_word, sentence)
+print(f"Word: {ambiguous_word}")
+print(f"Context: {sentence}")
+print(f"Sense: {sense}")
+print(f"Definition: {sense.definition()}")
