@@ -1,0 +1,9 @@
+import nltk
+def nltk_pos_tag_sentence(sentence):
+    tokens = nltk.word_tokenize(sentence)
+    return nltk.pos_tag(tokens)
+nltk.download('punkt')
+nltk.download('averaged_perceptron_tagger')
+sentence = "the dog chased the cat"
+tagged_sentence = nltk_pos_tag_sentence(sentence)
+print(tagged_sentence)
