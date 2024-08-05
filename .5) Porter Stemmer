@@ -1,0 +1,7 @@
+from nltk.stem import PorterStemmer
+def stemming(words):
+    ps = PorterStemmer()
+    stemmed = [ps.stem(word) for word in words]
+    return stemmed
+words = ["organized", "banking", "happily"]
+print("Stemmed words: ", stemming(words))
