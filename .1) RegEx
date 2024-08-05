@@ -1,6 +1,6 @@
 import re
-text = "Hello, my name is Saaniya and my email is saaniya@gmail.com"
-pattern = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
+text = "Hi, this is my email id: san123@gmail.com"
+pattern = r'\b[A-Za-z0-9+-_0%$]+@[A-Za-z]+.[a-z]{2,}\b'
 regex = re.compile(pattern)
 matches = regex.findall(text)
 for match in matches:
